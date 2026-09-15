@@ -1,0 +1,32 @@
+version: "1.0"
+policy_name: "POC Security Quality Gate Standard"
+description: "Defines risk thresholds and severity block criteria for pipeline enforcement."
+
+gates:
+  secrets:
+    fail_on_count_above: 0
+    allowed_severities: []
+    block_build: true
+
+  sast:
+    fail_on_count_above: 0
+    allowed_severities: ["INFO", "LOW"]
+    block_build: true
+    blocked_rules:
+      - "csharp.lang.security"
+
+  sca:
+    fail_on_count_above: 0
+    allowed_severities: ["LOW", "MEDIUM"]
+    block_build: true
+    ignore_unfixed: true
+
+  dast:
+    fail_on_count_above: 0
+    allowed_severities: ["INFORMATIONAL", "LOW"]
+    block_build: false # WARN mode for DAST during initial deployment stage
+
+evidence_retention:
+  archive_directory: "evidence"
+  retention_days: 90
+  compress_format: "tar.gz"

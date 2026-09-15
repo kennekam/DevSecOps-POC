@@ -1,0 +1,59 @@
+version: "3.8"
+
+networks:
+  security-poc-net:
+    driver: bridge
+
+services:
+  # Target .NET Application
+  rcs-api:
+    build:
+      context: ../../apps/RcsApi
+      dockerfile: Dockerfile
+    container_name: rcs-api
+    restart: always
+    ports:
+      - "127.0.0.1:5000:8080"
+    networks:
+      - security-poc-net
+
+  # Security Findings Management System (DefectDojo Minimal Stack)
+  postgres:
+    image: postgres:15-alpine
+    container_name: defectdojo-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: defectdojo
+      POSTGRES_USER: defectdojo
+      POSTGRES_PASSWORD: DefectDojoSecurePassword123!
+    volumes:
+      - dojo-postgres-data:/var/lib/postgresql/data
+    networks:
+      - security-poc-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: defectdojo-redis
+    restart: always
+    networks:
+      - security-poc-net
+
+  defectdojo:
+    image: defectdojo/defectdojo-django:latest
+    container_name: defectdojo-web
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DD_DATABASE_URL: postgres://defectdojo:DefectDojoSecurePassword123!@postgres:5432/defectdojo
+      DD_CELERY_BROKER_URL: redis://redis:6379/0
+      DD_SECRET_KEY: "poc-super-secret-key-change-in-production"
+      DD_BOOTSTRAP_ADMIN_PASSWORD: "AdminPassword123!"
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks:
+      - security-poc-net
+
+volumes:
+  dojo-postgres-data:
