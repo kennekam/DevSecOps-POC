@@ -1,0 +1,64 @@
+# Build and Release Folders
+bin/
+obj/
+[Ou]tput/
+[Rr]elease/
+[Dd]ebug/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.userprefs
+
+# Visual Studio Code files
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains (Rider, etc.)
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment and Secrets
+.env
+.env.*
+!.env.example
+secrets.sh
+*.pem
+*.key
+
+# Docker
+.dockerignore
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Infrastructure/Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Logs
+*.log

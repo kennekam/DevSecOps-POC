@@ -3,7 +3,10 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 REPORTS_DIR="${ROOT_DIR}/reports/raw"
+
+# Ensure directory exists AND has broad write permissions for ZAP's container user
 mkdir -p "${REPORTS_DIR}"
+chmod 777 "${REPORTS_DIR}"
 
 BASE_URL=${1:-"http://127.0.0.1:5000"}
 HEALTH_URL="${BASE_URL}/health"
